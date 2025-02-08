@@ -1,15 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import { UserRouter } from "./routes/UserRoute.js";
 import { IssueRouter } from "./routes/IssueRoute.js";
-import { DBConnect } from "./utils/DB.js";
 import { NgoRouter } from "./routes/NGORoute.js";
-import cors from "cors";
+import { DBConnect } from "./utils/DB.js";
 
 dotenv.config();
 
-export const app = express();
-const PORT = process.env.PORT || 3000;
+const app = express();
 
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -19,7 +18,7 @@ app.use("/api/users", UserRouter);
 app.use("/api/issues", IssueRouter);
 app.use("/api/ngos", NgoRouter);
 
-// Connect to DB
+// Connect to DB (Ensure DB connection happens before handling requests)
 DBConnect().then((res) => {
     if (res.success) {
         console.log(res.message);
