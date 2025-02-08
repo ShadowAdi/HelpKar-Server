@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
 
 export const DBConnect = async () => {
+    const MONGODB_URI=process.env.MONGODB_URI
     try {
-        await mongoose.connect("mongodb+srv://AdityaHubUser:isnPFyUOJtdz23qv@yogacluster.5vr9q.mongodb.net/helpkar?retryWrites=true&w=majority&appName=YogaCluster");
+        if (!MONGODB_URI) {
+            return {
+                success: false,
+                message: "Failed to connect to DB MONGODB_URI Do not Exists"
+            };
+        }
+        await mongoose.connect(MONGODB_URI);
 
         return {
             success: true,

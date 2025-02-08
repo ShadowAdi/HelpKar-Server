@@ -7,7 +7,7 @@ import { NgoRouter } from "./routes/NGORoute.js";
 import cors from "cors";
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: "*" })); // Allow all origins (for testing)
