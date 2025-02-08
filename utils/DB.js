@@ -1,25 +1,23 @@
 import mongoose from "mongoose";
 
 export const DBConnect = async () => {
-    const MONGODB_URI=process.env.MONGODB_URI
-    try {
-        if (!MONGODB_URI) {
-            return {
-                success: false,
-                message: "Failed to connect to DB MONGODB_URI Do not Exists"
-            };
-        }
-        await mongoose.connect(MONGODB_URI);
+    const MONGODB_URI = process.env.MONGODB_URI;
 
-        return {
-            success: true,
-            message: "DB Connected"
-        };
+    if (!MONGODB_URI) {
+        console.error("MONGODB_URI is missing.");
+        return { success: false, message: "MONGODB_URI is missing." };
+    }
+
+    try {
+        console.log("Connecting to MongoDB...");
+        await mongoose.connect(MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("MongoDB connected successfully!");
+        return { success: true, message: "DB Connected" };
     } catch (error) {
-        console.error("Error in connecting to MongoDB:", error);
-        return {
-            success: false,
-            message: "Failed to connect to DB"
-        };
+        console.error("MongoDB connection failed:", error);
+        return { success: false, message: "Failed to connect to DB" };
     }
 };

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { UserRouter } from "../routes/UserRoute.js"; // Updated path
+import { UserRouter } from "../routes/UserRoute.js";
 import { IssueRouter } from "../routes/IssueRoute.js";
 import { NgoRouter } from "../routes/NGORoute.js";
 import { DBConnect } from "../utils/DB.js";
@@ -19,7 +19,7 @@ app.use("/api/issues", IssueRouter);
 app.use("/api/ngos", NgoRouter);
 
 // Connect to DB
-DBConnect().then((res) => {
+await DBConnect().then((res) => {
     if (res.success) {
         console.log(res.message);
     } else {
@@ -27,5 +27,12 @@ DBConnect().then((res) => {
     }
 });
 
-// Vercel requires an export for Express apps
+// Handle Vercel Serverless Function
 export default app;
+
+// Ensure Vercel handles it correctly
+export const config = {
+  api: {
+    bodyParser: false, // Use express.json() instead
+  },
+};
